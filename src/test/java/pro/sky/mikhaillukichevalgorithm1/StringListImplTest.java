@@ -331,10 +331,10 @@ class StringListImplTest {
 
         //Test action
         Exception exception1 = assertThrows(StringListIndexOutOfBoundsException.class,
-                () -> stringList.set(-5, "5")
+                () -> stringList.remove(-5)
         );
         Exception exception2 = assertThrows(StringListIndexOutOfBoundsException.class,
-                () -> stringList.set(10, "5")
+                () -> stringList.remove(10)
         );
         assertEquals(expectedMessage, exception1.getMessage());
         assertEquals(expectedMessage, exception2.getMessage());
