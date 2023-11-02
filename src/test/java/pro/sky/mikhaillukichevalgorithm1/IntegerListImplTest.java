@@ -47,22 +47,6 @@ class IntegerListImplTest {
     @Test
     void addItem_success() {
         //Data preparation
-
-        //Expected result
-        Integer expectedInteger = 0;
-        Integer[] expectedResultArray = {0, null, null, null, null};
-        String expectedResult = Arrays.toString(expectedResultArray);
-
-        //Test action
-        Integer actualInteger = integerList.add(0);
-        String actualResult = integerList.print();
-        assertEquals(expectedInteger, actualInteger);
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    void addItem_withIntegerListIsFullException() {
-        //Data preparation
         integerList.add(0);
         integerList.add(1);
         integerList.add(2);
@@ -70,13 +54,15 @@ class IntegerListImplTest {
         integerList.add(4);
 
         //Expected result
-        String expectedMessage = "IntegerList is full. Cannot add more elements.";
+        Integer expectedInteger = 5;
+        Integer[] expectedResultArray = {0, 1, 2, 3, 4, 5, null, null};
+        String expectedResult = Arrays.toString(expectedResultArray);
 
         //Test action
-        Exception exception = assertThrows(IntegerListIsFullException.class,
-                () -> integerList.add(5)
-        );
-        assertEquals(expectedMessage, exception.getMessage());
+        Integer actualInteger = integerList.add(5);
+        String actualResult = integerList.print();
+        assertEquals(expectedInteger, actualInteger);
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -100,37 +86,20 @@ class IntegerListImplTest {
         integerList.add(1);
         integerList.add(2);
         integerList.add(3);
+        integerList.add(4);
 
         //Expected result
-        Integer expectedInteger = 2;
-        Integer[] expectedResultArray = {0, 1, 2, 2, 3};
+        Integer expectedInteger = 9;
+        Integer[] expectedResultArray = {0, 1, 9, 2, 3, 4, null, null};
         String expectedResult = Arrays.toString(expectedResultArray);
 
         //Test action
-        Integer actualInteger = integerList.add(2, 2);
+        Integer actualInteger = integerList.add(2, 9);
         String actualResult = integerList.print();
         assertEquals(expectedInteger, actualInteger);
         assertEquals(expectedResult, actualResult);
     }
 
-    @Test
-    void addIndexItem_withIntegerListIsFullException() {
-        //Data preparation
-        integerList.add(0);
-        integerList.add(1);
-        integerList.add(2);
-        integerList.add(3);
-        integerList.add(4);
-
-        //Expected result
-        String expectedMessage = "IntegerList is full. Cannot add more elements.";
-
-        //Test action
-        Exception exception = assertThrows(IntegerListIsFullException.class,
-                () -> integerList.add(1, 5)
-        );
-        assertEquals(expectedMessage, exception.getMessage());
-    }
 
     @Test
     void addIndexItem_withIntegerListIndexOutOfBoundsException_actualSize() {
@@ -659,8 +628,8 @@ class IntegerListImplTest {
         integerList.sortAsc();
         boolean actualResultTrue = integerList.binaryContains(4);
         boolean actualResultFalse = integerList.binaryContains(8);
-        assertEquals(expectedResultTrue,actualResultTrue);
-        assertEquals(expectedResultFalse,actualResultFalse);
+        assertEquals(expectedResultTrue, actualResultTrue);
+        assertEquals(expectedResultFalse, actualResultFalse);
     }
 
     @Test
