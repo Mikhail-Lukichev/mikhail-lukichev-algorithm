@@ -9,7 +9,7 @@ import java.util.Random;
 public class IntegerListImpl implements IntegerList{
 
 
-    private final Integer[] integerList;
+    private Integer[] integerList;
 
     public IntegerListImpl(int size) {
         this.integerList = new Integer[size];
@@ -31,8 +31,8 @@ public class IntegerListImpl implements IntegerList{
         //if argument is null, throw an exception
         if (item == null) throw new IntegerListIllegalArgumentException("Argument cannot be null.");
 
-        //if IntegerList is full, throw an exception
-        if (this.size() == integerList.length ) throw new IntegerListIsFullException("IntegerList is full. Cannot add more elements.");
+        //if IntegerList is full, grow the integerList
+        if (this.size() == integerList.length ) this.grow();
 
         int i = 0;
         while (i < integerList.length) {
@@ -52,8 +52,8 @@ public class IntegerListImpl implements IntegerList{
         //find last not empty element
         int lastNotEmptyIndex = findLastNotNullElementIndex();
 
-        //if last not empty element is the last in the array, throw exception (elements cannot be moved right without data loss)
-        if (lastNotEmptyIndex == integerList.length - 1) throw new IntegerListIsFullException("IntegerList is full. Cannot add more elements.");
+        //if last not empty element is the last in the array, grow the integerList
+        if (lastNotEmptyIndex == integerList.length - 1) this.grow();
 
         //if index is out of the array size, throw an exception
         if (index >= integerList.length || index < 0) throw new IntegerListIndexOutOfBoundsException("Index is out of IntegerList bounds.");
@@ -225,15 +225,7 @@ public class IntegerListImpl implements IntegerList{
 
     public void sortAsc(){
         int max = this.findLastNotNullElementIndex();
-        for (int i = 0; i < max; i++) {
-            int minElementIndex = i;
-            for (int j = i + 1; j <= max; j++) {
-                if (integerList[j] < integerList[minElementIndex]) {
-                    minElementIndex = j;
-                }
-            }
-            swapElements(integerList, i, minElementIndex);
-        }
+        quickSort(integerList,0,max);
     }
 
     public boolean binaryContains(Integer item){
@@ -262,5 +254,32 @@ public class IntegerListImpl implements IntegerList{
             }
         }
         return false;
+    }
+
+    private void grow() {
+        int newLength = (int) (Math.ceil(integerList.length * 1.5));
+        integerList = Arrays.copyOf(integerList,newLength);
+    }
+
+    private static void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+    }
+
+    private static int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        return i + 1;
     }
 }
